@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en" xmlns:th="http://www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
 </head>
 <body>
+ <table>
+     <tr th:each="product : ${products}">
+
+         <p><img align="left" width="100" height="100" th:src="(${product.image}==null)?'https://upload.wikimedia.org/wikipedia/commons/a/a9/Vector_Book_blue.svg':${product.image}"/></p>
+         <p th:text ="'Name: ' +${product.name}"> Name </p>
+         <p th:text ="'Price: ' +${product.price}">Price</p>
+         <p th:text ="'Description: ' +${product.description}">Description</p>
+         <p th:text ="'Quantity: ' +${product.quantity}">Quantity</p>
+     </tr>
+ </table>
 
 </body>
 </html>
