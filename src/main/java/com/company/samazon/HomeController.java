@@ -31,7 +31,7 @@ public class HomeController {
     @RequestMapping("/")
     public String homePage(Model model){
         model.addAttribute("products", productRepository.findAll());
-        return "temp";
+        return "Home";
     }
 
     @RequestMapping("/product/{id}")
