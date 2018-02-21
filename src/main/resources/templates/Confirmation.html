@@ -6,5 +6,36 @@
 </head>
 <body>
 
+<div class="container">
+
+    <div class="starter-template">
+        <h5>Order Confirmation</h5>
+    </div>
+    <br /><br />
+    <table class="table table-striped">
+        <tr>
+            <th>Product Name:</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>quantity</th>
+            <th>Price</th>
+            <!--<th></th>-->
+        </tr>
+        <tr th:each="cart : ${myCart}">
+
+            <td th:text="${cart.name}"></td>
+            <td th:text="${cart.price}"></td>
+            <td th:text="${cart.description}"></td>
+            <td th:text="${cart.quantity}"></td>
+            <td th:with="price=${cart.price * cart.quantity}"></td>
+            <!--<td><a href="#" th:href="@{/removeorder/{id} (id = ${cart.id})}">Remove</a></td>-->
+        </tr>
+    </table>
+    <div th:each="cart : ${mycart}">
+        <div th:with= "totalPrice=${cart.price + cart.price}"></div>
+        <label>Total price:</label><span th:text="${totalprice}"></span>
+    </div>
+</div><!-- /.container -->
+
 </body>
 </html>
