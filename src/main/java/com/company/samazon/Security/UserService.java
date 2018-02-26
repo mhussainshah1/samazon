@@ -54,7 +54,10 @@ public class UserService {
 //    }
 
 
-
+    public void saveCustomer(AppUser appuser){
+        appuser.setRoles(Arrays.asList(roleRepository.findByRoleName("CUSTOMER")));
+        userRepository.save(appuser);
+    }
 
     public void saveAdmin(AppUser appuser){
         appuser.setRoles(Arrays.asList(roleRepository.findByRoleName("ADMIN")));
@@ -69,12 +72,7 @@ public class UserService {
         product.setQuantity(product.getQuantity() -1);
     }
 
-    public void saveCustomer(AppUser appuser){
-        appuser.setRoles(Arrays.asList(roleRepository.findByRoleName("CUSTOMER")));
-        userRepository.save(appuser);
-        appuser.setCarts(new HashSet<>());
 
-    }
 
 //    public void findCarts(AppUser appUser){
 //        appUser.setCarts(Arrays.asList(cartRepository.findByAppuserByUsername(appUser.getUsername())));
@@ -82,12 +80,19 @@ public class UserService {
 
     public void setActiveCart(AppUser appUser){
         Collection<Cart> carts = appUser.getCarts();
-        carts.add(new Cart());
+        Cart thisCart = new Cart();
+        carts.add(thisCart);
+        cartRepository.save(thisCart);
+        appUser.setCarts(carts);
     }
 
-//    public void updateCart(Product product, Cart cart){
-//        cart.setProducts(Arrays.asList(productRepository.findbyName(product.getName())));
-//    }
+    public Cart updateCart(Product product, Cart cart){
+        Collection<Product> products = cart.getProducts();
+        products.add(productRepository.findByName(product.getName()));
+        cart.setProducts(products);
+        cartRepository.save(cart);
+        return cart;
+    }
 
     public void removeItem(Product product, Cart cart){
         Collection<Product> products = cart.getProducts();
@@ -103,16 +108,31 @@ public class UserService {
         return total;
     }
 
-    public Cart getActiveCart(AppUser appUser){
-        Collection<Cart> carts = appUser.getCarts();
+    public Cart getActiveCart(String username){
+        AppUser appUser=userRepository.findByUsername(username);
+        Collection<Cart> carts= appUser.getCarts();
         Cart thisCart = new Cart();
         for (Cart cart : carts){
             if(cart.getStatus().equalsIgnoreCase("Active")){
                 thisCart = cart;
             }
-        } return thisCart;
+        }
+        return thisCart;
     }
 
+    public Collection<Product> getActiveCartProducts(String username){
+        AppUser appUser=userRepository.findByUsername(username);
+        Collection<Cart> carts= appUser.getCarts();
+        Cart thisCart = new Cart();
+        for (Cart cart : carts){
+            if(cart.getStatus().equalsIgnoreCase("Active")){
+                thisCart = cart;
+            }
+        }
+        return thisCart.getProducts();
+    }
+
+    //this method looks for all inactive carts- order history
     public Collection<Cart> getOrders(){
         Collection<Cart> carts = new HashSet<>();
         for (Cart cart : cartRepository.findAll()){
@@ -127,8 +147,13 @@ public class UserService {
         for (Product product : cart.getProducts()){
             updateQuantity(product);
         }
+       // Collection<Cart> carts = userRepo
     }
 
+    public void changeCartStatus(Cart cart){
+        cart.setStatus("NotActive");
+        cartRepository.save(cart);
+    }
 
 }
 

@@ -34,7 +34,8 @@ public class AppUser {
 
     public AppUser() {
         this.roles = new HashSet<>();
-        this.carts = new HashSet<>();
+
+        this.carts = new HashSet<>();;
         //double check this constructor
     }
 
@@ -80,9 +81,9 @@ public class AppUser {
         return carts;
     }
 
-
-
     public void setCarts(Collection<Cart> carts) {
         this.carts = carts;
     }
+
+
 }

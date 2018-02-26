@@ -23,14 +23,11 @@ public class Cart {
     private Collection<Product> products;
 
     public Cart() {
-        this.appuser = new HashSet<>();
+        this.status = "Active";
+       // this.appuser = new HashSet<>();
         this.products = new HashSet<>();
     }
 
-    public Cart(Collection <AppUser> appuser) {
-        this.appuser = appuser;
-        this.status = "Active";
-    }
 
 
     public long getId() {

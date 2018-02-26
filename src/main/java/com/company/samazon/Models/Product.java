@@ -24,6 +24,9 @@ public class Product {
     @Column
     private int quantity;
 
+    @Column
+    private String image;
+
     @ManyToMany(mappedBy = "products",fetch =FetchType.LAZY)
     private Collection<Cart> carts;
 
@@ -85,5 +88,13 @@ public class Product {
 
     public void setCarts(Collection<Cart> carts) {
         this.carts = carts;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

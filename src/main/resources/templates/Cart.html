@@ -2,38 +2,45 @@
 <html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <title>Samazon</title>
 </head>
 <body>
+<div class="container">
+    <th:block th:replace="Base :: navlinks"></th:block>
+    <h3>Cart</h3>
 
-<h3>Cart</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Image</th>
+            <th scope="col">Item</th>
+            <th scope="col">Price</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td><img th:src="${product.image}" width="150" height="150"/></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.price}"></td>
+            <td><a th:href="@{/remove/{id} (id=${product.id})}">Remove Item</a></td>
+        </tr>
+        </tbody>
+    </table>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Image</th>
-        <th scope="col">Item</th>
-        <th scope="col">Price</th>
-        <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="product : ${products}">
-        <td><img th:src='${product.image}' width="150" height="150"/></td>
-        <td th:text="${product.name}"></td>
-        <td th:text="${product.price}"></td>
-        <td><a th:href="@{/remove/{id2}/{id} (id=${appUser.id}, id2=${product.id})}">Remove Item</a></td>
-    </tr>
-    </tbody>
-</table>
-<h4>If you spend over $50, you will receive free shipping</h4>
 
-<div th:switch="${total}">
-    <p th:case = "&ge; 50" th:inline="text"> Free Shipping <br /> Total: [[${total}]]</p>
-    <p th:case = "&lt; 50" th:inline="text"> Shipping Costs: $5 <br /> Total: [[${total}]] + $5 for Shipping</p>
+    <div th:text="${message}"></div> <br /> <br />
+    <div th:number="${total}"></div>
+
+
 </div>
 
 
 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

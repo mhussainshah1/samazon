@@ -32,8 +32,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
-                .antMatchers("/",  "/css/**", "/img/**", "/fonts/**", "/js/**", "/sass/**", "/temp","/assets/**","/product/**").permitAll()
-                .antMatchers("/newuser", "/user/**","/checkout/**","/addtocart/**","/cart/**").access("hasAnyAuthority('CUSTOMER', 'ADMIN')")
+                .antMatchers("/",  "/css/**", "/img/**", "/fonts/**", "/js/**", "/sass/**", "/temp","/assets/**","/product/**", "/newuser").permitAll()
+                .antMatchers("/user/**","/checkout/**","/addtocart/**","/cart/**").access("hasAnyAuthority('CUSTOMER', 'ADMIN')")
                 .antMatchers("/newproduct", "/edit/**").access("hasAuthority('ADMIN')")
 
                 .anyRequest().authenticated()
