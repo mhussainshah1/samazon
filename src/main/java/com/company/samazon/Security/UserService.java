@@ -45,14 +45,13 @@ public class UserService {
 
     public AppUser findById(Long id){   return userRepository.findById(id); }
 
-
     public AppUser findByUsername(String username){   return userRepository.findByUsername(username); }
 
-    public Cart findByCart(String username){   return cartRepository.findByAppuserByUsername(username); }
+//    public Cart findByCart(String username){   return cartRepository.findByAppuserByUsername(username); }
 
-    public Product findByName(String name){
-        return productRepository.findbyName(name);
-    }
+//    public Product findByName(String name){
+//        return productRepository.findbyName(name);
+//    }
 
 
 
@@ -73,18 +72,35 @@ public class UserService {
     public void saveCustomer(AppUser appuser){
         appuser.setRoles(Arrays.asList(roleRepository.findByRoleName("CUSTOMER")));
         userRepository.save(appuser);
+        appuser.setCarts(new HashSet<>());
+
     }
 
-    public void findCarts(AppUser appUser){
-        appUser.setCarts(Arrays.asList(cartRepository.findByAppuserByUsername(appUser.getUsername())));
-    }
+//    public void findCarts(AppUser appUser){
+//        appUser.setCarts(Arrays.asList(cartRepository.findByAppuserByUsername(appUser.getUsername())));
+//    }
 
     public void setActiveCart(AppUser appUser){
-        appUser.getCarts().add(new Cart(appUser));
+        Collection<Cart> carts = appUser.getCarts();
+        carts.add(new Cart());
     }
 
-    public void updateCart(Product product, Cart cart){
-        cart.setProducts(Arrays.asList(productRepository.findbyName(product.getName())));
+//    public void updateCart(Product product, Cart cart){
+//        cart.setProducts(Arrays.asList(productRepository.findbyName(product.getName())));
+//    }
+
+    public void removeItem(Product product, Cart cart){
+        Collection<Product> products = cart.getProducts();
+        products.remove(product);
+        cart.setProducts(products);
+    }
+
+    public double getTotal(Cart cart){
+        double total = 0;
+        for(Product product : cart.getProducts()){
+            total = total + (product.getPrice());
+        }
+        return total;
     }
 
     public Cart getActiveCart(AppUser appUser){
@@ -105,13 +121,15 @@ public class UserService {
             }
         }
         return carts;
-     }
+    }
 
-     public void CheckoutCart(Cart cart){
+    public void CheckoutCart(Cart cart){
         for (Product product : cart.getProducts()){
             updateQuantity(product);
         }
-     }
+    }
 
 
 }
+
+

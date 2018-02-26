@@ -1,10 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <title>Samazon</title>
 </head>
 <body>
+
+<h3>Cart</h3>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Image</th>
+        <th scope="col">Item</th>
+        <th scope="col">Price</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td><img th:src='${product.image}' width="150" height="150"/></td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.price}"></td>
+        <td><a th:href="@{/remove/{id2}/{id} (id=${appUser.id}, id2=${product.id})}">Remove Item</a></td>
+    </tr>
+    </tbody>
+</table>
+<h4>If you spend over $50, you will receive free shipping</h4>
+
+<div th:switch="${total}">
+    <p th:case = "&ge; 50" th:inline="text"> Free Shipping <br /> Total: [[${total}]]</p>
+    <p th:case = "&lt; 50" th:inline="text"> Shipping Costs: $5 <br /> Total: [[${total}]] + $5 for Shipping</p>
+</div>
+
+
 
 </body>
 </html>

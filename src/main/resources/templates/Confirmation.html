@@ -5,7 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-
 <div class="container">
 
     <div class="starter-template">
@@ -14,28 +13,26 @@
     <br /><br />
     <table class="table table-striped">
         <tr>
-            <th>Product Name:</th>
+            <th>Image</th>
+            <th>Product:</th>
             <th>Price</th>
             <th>Description</th>
-            <th>quantity</th>
-            <th>Price</th>
+
             <!--<th></th>-->
         </tr>
-        <tr th:each="cart : ${myCart}">
-
-            <td th:text="${cart.name}"></td>
-            <td th:text="${cart.price}"></td>
-            <td th:text="${cart.description}"></td>
-            <td th:text="${cart.quantity}"></td>
-            <td th:with="price=${cart.price * cart.quantity}"></td>
-            <!--<td><a href="#" th:href="@{/removeorder/{id} (id = ${cart.id})}">Remove</a></td>-->
+        <tr th:each="product : ${products}">
+            <td><img th:src='${product.image}' width="150" height="150"/></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.description}"></td>
         </tr>
     </table>
-    <div th:each="cart : ${mycart}">
-        <div th:with= "totalPrice=${cart.price + cart.price}"></div>
-        <label>Total price:</label><span th:text="${totalprice}"></span>
-    </div>
-</div><!-- /.container -->
 
+    <div th:switch="${total}">
+        <p th:case = "&ge; 50" th:inline="text"> Total: [[${total}]]</p>
+        <p th:case = "&lt; 50" th:inline="text"> Total: [[${total}]] + $5 for Shipping</p>
+    </div>
+
+</div><!-- /.container -->
 </body>
 </html>

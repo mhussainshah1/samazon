@@ -4,6 +4,7 @@ package com.company.samazon.Models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 public class Cart {
@@ -15,18 +16,18 @@ public class Cart {
     @NotNull
     private String status;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private AppUser appuser;
+    @ManyToMany(mappedBy = "carts")
+    private Collection<AppUser> appuser;
 
-    @ManyToMany(fetch =FetchType.LAZY)
-    @JoinTable(joinColumns = @JoinColumn(name="cart_id"),
-            inverseJoinColumns = @JoinColumn(name="product_id"))
+    @ManyToMany
     private Collection<Product> products;
 
     public Cart() {
+        this.appuser = new HashSet<>();
+        this.products = new HashSet<>();
     }
 
-    public Cart(AppUser appuser) {
+    public Cart(Collection <AppUser> appuser) {
         this.appuser = appuser;
         this.status = "Active";
     }
@@ -40,13 +41,7 @@ public class Cart {
         this.id = id;
     }
 
-    public AppUser getAppuser() {
-        return appuser;
-    }
 
-    public void setAppuser(AppUser appuser) {
-        this.appuser = appuser;
-    }
 
     public Collection<Product> getProducts() {
         return products;
@@ -62,5 +57,13 @@ public class Cart {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Collection<AppUser> getAppuser() {
+        return appuser;
+    }
+
+    public void setAppuser(Collection<AppUser> appuser) {
+        this.appuser = appuser;
     }
 }

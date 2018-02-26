@@ -7,6 +7,7 @@ import com.company.samazon.Models.Product;
 import com.company.samazon.Repositories.ProductRepository;
 import com.company.samazon.Repositories.UserRepository;
 import com.company.samazon.Security.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,8 @@ public class HomeController {
 
     @Autowired
     private UserRepository userRepository;
+
+    ////////////Everyone can view
 
     @RequestMapping("/")
     public String homePage(Model model){
@@ -69,80 +72,114 @@ public class HomeController {
         return "redirect:/";
     }
 
-    @RequestMapping("/user/{id}")
-    public String userDetails(@PathVariable("id") long id, Model model){
-        AppUser appuser = userService.findById(id);
-        model.addAttribute("carts", appuser.getCarts());
-        model.addAttribute("appuser", appuser);
-        return "UserDetails";
-    }
+
+
+//    ///////User's Ordering History
+//    @RequestMapping("/user")
+//    public String userDetails(Model model, Authentication auth){
+//        AppUser appuser = userService.findByUsername(auth.getName());
+//        model.addAttribute("carts", appuser.getCarts());
+//        model.addAttribute("appuser", appuser);
+//        return "UserDetails";
+//    }
 
     /////////////////////////////////Checkout  (CUSTOMER)
+//
+//    @RequestMapping("/checkout/{id}")
+//    public String checkoutCart(@PathVariable("id") Long id, Model model){
+//        AppUser appUser = userRepository.findOne(id);
+//        Cart myCart = userService.getActiveCart(appUser);
+//
+//        //Below: updating quantities of all products in cart
+//        userService.CheckoutCart(myCart);
+//
+//        //Below: Changing cart -> order
+//        myCart.setStatus("NotActive");
+//
+//        //Below: new active cart for the next time
+//        userService.setActiveCart(appUser);
+//
+//        //Sending information from order to confirmation
+//        model.addAttribute(myCart);
+//        return "Confirmation";
+//    }
 
-    @RequestMapping("/checkout/{id}")
-    public String checkoutCart(@PathVariable("id") Long id, Model model){
-        AppUser appUser = userRepository.findOne(id);
-        Cart myCart = userService.getActiveCart(appUser);
-
-        //Below: updating quantities of all products in cart
-        userService.CheckoutCart(myCart);
-
-        //Below: Changing cart -> order
-        myCart.setStatus("NotActive");
-
-        //Below: new active cart for the next time
-        userService.setActiveCart(appUser);
-
-        //Sending information from order to confirmation
-        model.addAttribute(myCart);
-        return "Confirmation";
-    }
+//
+//    ////////////////////////// CUSTOMER ADDING PRODUCT TO CART
+//    @RequestMapping("/addtocart/{id}")
+//    public String addToCart(@PathVariable("id") long id, Authentication auth, Model model){
+//        AppUser appUser = userRepository.findByUsername(auth.getName());
+//        Product product = productRepository.findOne(id);
+//        Cart cart = userService.getActiveCart(appUser);
+//        userService.updateCart(product, cart);
+//        model.addAttribute("cart", cart);
+//        return "redirect:/cart";
+//
+//    }
 
 
+//    ///////////////////////CUSTOMER VIEWING CART
+//    @RequestMapping("/cart")
+//    public String viewCart(Authentication auth, Model model){
+//        AppUser appUser = userRepository.findByUsername(auth.getName());
+//        model.addAttribute("appUser", appUser);
+//        model.addAttribute("total", userService.getTotal(userService.getActiveCart(appUser)));
+//        model.addAttribute("products", userService.getActiveCart(appUser).getProducts());
+//        return "Cart";
+//    }
+//
+//
+//    ///////////////CUSTOMER CLICKS REMOVE PRODUCT WHILE LOOKING AT CART
+//    @RequestMapping("/remove/{id}")
+//    public String removeItem(@PathVariable("id") long id, Authentication auth){
+//        AppUser appUser = userRepository.findByUsername(auth.getName());
+//        Product product = productRepository.findOne(id);
+//        Cart cart = userService.getActiveCart(appUser);
+//        userService.removeItem(product, cart);
+//        return "redirect:/cart";
+//    }
+
+
+/////////////////////////////////////////////////////////////////////////////////
 
     ////////(ADMIN) USE TO CREATE NEW PRODUCT or EDIT
 
-    @GetMapping("/newproduct")
-    public String newProduct(Model model){
-        model.addAttribute("product", new Product());
-        return "ProductForm";
-    }
+//    @GetMapping("/newproduct")
+//    public String newProduct(Model model){
+//        model.addAttribute("product", new Product());
+//        return "ProductForm";
+//    }
+//
+//    @PostMapping("/newproduct")
+//    public String processProduct(@Valid @ModelAttribute("product") Product product, BindingResult result){
+//        if(result.hasErrors()){
+//            return "ProductForm";
+//        }
+//        userService.saveProduct(product);
+//        return "redirect:/";
+//    }
+//
+//    @RequestMapping("/edit/{id}")
+//    public String editProduct(@PathVariable("id") long id, Model model){
+//        Product product = productRepository.findOne(id);
+//        model.addAttribute("product", product);
+//        return "ProductForm";
+//    }
 
-    @PostMapping("/newproduct")
-    public String processProduct(@Valid @ModelAttribute("product") Product product, BindingResult result){
-        if(result.hasErrors()){
-            return "ProductForm";
-        }
-        userService.saveProduct(product);
-        return "redirect:/";
-    }
 
-    @RequestMapping("/edit/{id}")
-    public String editProduct(@PathVariable("id") long id, Model model){
-        Product product = productRepository.findOne(id);
-        model.addAttribute("product", product);
-        return "ProductForm";
-    }
 
- ////////////////////////// Cart (CUSTOMER)
-    @RequestMapping("/addtocart/{id}")
-    public String addToCart(@PathVariable("id") long id, Model model, AppUser appUser){
-        Product product = productRepository.findOne(id);
-        Cart cart = new Cart();
-        cart = userService.getActiveCart(appUser);
-        userService.updateCart(product, cart);
 
-        model.addAttribute("cart", cart);
-        return "redirect:/cart/{id}";
+//    @RequestMapping("/delete/{id}")
+//    public String deleteProduct(@PathVariable("id") long id){
+//        productRepository.delete(id);
+//        ///// Updates all user's carts and removes item
+//        return "redirect:/";
+//    }
 
-    }
 
-    @RequestMapping("/cart/{id}")
-    public String viewCart(@PathVariable("id") long id, Model model){
-        AppUser appUser = userRepository.findOne(id);
-        model.addAttribute("cart", userService.getActiveCart(appUser));
-        return "Cart";
-    }
+
+
+
 
 
 }

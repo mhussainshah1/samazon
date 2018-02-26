@@ -5,6 +5,18 @@
     <title>Title</title>
 </head>
 <body>
+<h3>Product Details</h3>
 
+
+<span th:inline="text">Product Name: [[${product.name}]]<br/></span>
+<span th:inline="text">Price: [[${product.price}]]<br /></span>
+<span th:inline="text">Available Quantity: [[${product.quantity}]]<br/></span>
+<span th:inline="text">Description: [[${product.description}]]<br/></span>
+
+<a sec:authorize="hasAnyAuthority('CUSTOMER', 'ADMIN')" th:href="@{/edit/{id2} (id2=${product.id})}">Add to Cart</a>
+<a sec:authorize="hasAuthority('ADMIN')" th:href="@{/edit/{id2} (id2=${product.id})}">Add to Cart</a>
+
+
+<br/><br/><br/>
 </body>
 </html>

@@ -5,6 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-
+<div th:inline="text">[[${appUser.username}, Order History</div>
+<div th:each="cart : ${carts}">
+    <span th:inline="text">Order #: [[${cart.id}]]</span>
+    <a th:href="@{/orderdetails/{id} (id=${cart.id})}">Order Details </a>
+</div>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.company.samazon.Models;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 public class Product {
@@ -15,7 +16,7 @@ public class Product {
     private String name;
 
     @Column
-    private float price;
+    private double price;
 
     @Column
     private String description;
@@ -23,12 +24,11 @@ public class Product {
     @Column
     private int quantity;
 
-    @ManyToMany(fetch =FetchType.LAZY)
-    @JoinTable(joinColumns = @JoinColumn(name="product_id"),
-            inverseJoinColumns = @JoinColumn(name="cart_id"))
+    @ManyToMany(mappedBy = "products",fetch =FetchType.LAZY)
     private Collection<Cart> carts;
 
     public Product() {
+        this.carts = new HashSet<>();
     }
 
     public Product(String name, float price, String description, int quantity) {
@@ -55,11 +55,11 @@ public class Product {
         this.name = name;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

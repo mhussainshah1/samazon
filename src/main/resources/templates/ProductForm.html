@@ -2,9 +2,38 @@
 <html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8"/>
-    <title>Title</title>
+    <title>Samazon</title>
 </head>
 <body>
+<h3>Product Information</h3>
 
+<form class="navbar-form pull-left" action="#" th:action="@{/newproduct}" th:object="${product}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <input type="text" placeholder="Name" th:field="*{name}" />
+    <span th:if="${#fields.hasErrors('name')}"
+          th:errors="*{name}"></span><br />
+
+    <input type="number" placeholder="Price" th:field="*{price}" />
+    <span th:if="${#fields.hasErrors('price')}"
+          th:errors="*{price}"></span><br />
+
+    <input type="text"  placeholder="Image" th:field="*{image}" />
+    <span th:if="${#fields.hasErrors('image')}"
+          th:errors="*{image}"></span><br />
+
+    <input type="test"  placeholder="Description" th:field="*{description}" />
+    <span th:if="${#fields.hasErrors('description')}"
+          th:errors="*{description}"></span><br />
+
+    <input type="number" placeholder="Quantity" th:field="*{quantity}" />
+    <span th:if="${#fields.hasErrors('quantity')}"
+          th:errors="*{quantity}"></span><br />
+
+
+    <button class="btn btn-primary btn-large" type="submit" >Submit</button>
+
+</form>
 </body>
 </html>

@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
 </head>
 <body>
+<form class="navbar-form pull-left" action="#" th:action="@{/newuser}" th:object="${appUser}" method="post">
 
+    <input type="hidden" th:field="*{id}" />
+    <input type="text" placeholder="Username" th:field="*{username}" />
+    <span th:if="${#fields.hasErrors('username')}"
+          th:errors="*{username}"></span><br />
+
+    <input type="text"  placeholder="Password" th:field="*{password}" />
+    <span th:if="${#fields.hasErrors('password')}"
+          th:errors="*{password}"></span><br />
+
+
+
+    <button class="btn btn-primary btn-large" type="submit" >Submit</button>
+
+</form>
 </body>
 </html>

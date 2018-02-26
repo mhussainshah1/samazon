@@ -26,9 +26,7 @@ public class AppUser {
             inverseJoinColumns = @JoinColumn(name="role_id"))
     private Collection<Role> roles;
 
-    @ManyToMany(fetch =FetchType.EAGER)
-    @JoinTable(joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="cart_id"))
+    @ManyToMany
     private Collection<Cart> carts;
 
 
