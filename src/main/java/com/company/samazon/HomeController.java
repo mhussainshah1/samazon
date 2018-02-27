@@ -77,15 +77,15 @@ public class HomeController {
     @RequestMapping("/user")
     public String userDetails(Model model, Authentication auth){
         AppUser appUser = userService.findByUsername(auth.getName());
-        Collection<Cart> carts = userService.getAllCarts(appUser);
-        for (Cart cart : carts){
+        Collection<Cart> carts = new HashSet<>();
+        for (Cart cart : userService.getAllCarts(appUser)){
             if(cart.getStatus().equalsIgnoreCase("NotActive")){
                 carts.add(cart);
                 model.addAttribute("cart", cart);
             }
         }
         model.addAttribute("carts", carts);
-        model.addAttribute("appuser", appUser);
+        model.addAttribute("appUser", appUser);
         return "UserDetails";
     }
 
