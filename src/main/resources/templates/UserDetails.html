@@ -8,9 +8,10 @@
 </head>
 <body>
 <div class="container">
+    <br /><br />
     <h4>Previous Orders</h4>
     <th:block th:replace="Base :: navlinks"></th:block>
-<div th:inline="text">[[${appUser.username}, Order History</div>
+<div th:inline="text">[[${appUser.username}]], Order History</div>
     <div th:each="cart : ${carts}">
     <span th:inline="text">Order #: [[${cart.id}]]</span>
     <a th:href="@{/order/{id} (id=${cart.id})}">Order Details </a>
