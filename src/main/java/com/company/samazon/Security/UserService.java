@@ -194,12 +194,6 @@ public class UserService {
 
 
 
-    public void changeCartStatus(Cart cart){
-        cart.setStatus("NotActive");
-        cartRepository.save(cart);
-    }
-
-
     public Iterable<Product> getAllProducts(){
         return productRepository.findAll();
     }

@@ -28,10 +28,7 @@
         </tr>
     </table>
 
-    <div th:switch="${total}">
-        <p th:case = "&ge; 50" th:inline="text"> Total: [[${total}]]</p>
-        <p th:case = "&lt; 50" th:inline="text"> Total: [[${total}]] + $5 for Shipping</p>
-    </div>
+    <div th:inline="text"> Your Cart Total = $[[${total}]]</div>
 
 </div><!-- /.container -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

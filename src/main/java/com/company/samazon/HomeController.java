@@ -60,7 +60,20 @@ public class HomeController {
         userService.saveCustomer(appUser);
         return "redirect:/login";
     }
-/////////////////////////////////////////User's Ordering History
+/////////////////////////////////////////////// (CUSTOMER)
+////////////////////////////////TESTED*******WORKS
+    @RequestMapping("/addtocart/{id}")
+    public String addToCart(@PathVariable("id") long id, Authentication auth, Model model){
+        AppUser appUser = userService.findByUsername(auth.getName());
+        Product product = userService.getProduct(id);
+        Cart activeCart = userService.updateCart(product, appUser);
+        model.addAttribute("cart", activeCart);
+        return "redirect:/cart";
+    }
+
+
+
+    /////////////////////////////////////////User's Ordering History
     @RequestMapping("/user")
     public String userDetails(Model model, Authentication auth){
         AppUser appuser = userService.findByUsername(auth.getName());
@@ -68,8 +81,8 @@ public class HomeController {
         model.addAttribute("appuser", appuser);
         return "UserDetails";
     }
-///////////////////////////////////////// (CUSTOMER)
 
+    ///////////////////////////////////////////////////////////////////////////////////////////
     @PostMapping("/searchproduct")
     public String showSearchResults(HttpServletRequest request, Model model)
     {
@@ -88,27 +101,22 @@ public class HomeController {
         return "SearchResult";
     }
 
-
-    @RequestMapping("/addtocart/{id}")
-    public String addToCart(@PathVariable("id") long id, Authentication auth, Model model){
-        AppUser appUser = userService.findByUsername(auth.getName());
-        Product product = userService.getProduct(id);
-        Cart activeCart = userService.updateCart(product, appUser);
-        model.addAttribute("cart", activeCart);
-        return "redirect:/cart";
-
-    }
-
     @RequestMapping("/checkout")
     public String checkoutCart(Authentication auth, Model model){
         AppUser appUser = userService.findByUsername(auth.getName());
-        ///Switches status of current active cart to notactive, creates new active cart
+        ///Switches status of current active cart to 'notactive', creates new active cart
         Cart myCart = userService.CheckoutCart(appUser);
-        model.addAttribute(myCart);
+        model.addAttribute("cart", myCart);
+        Collection<Product> products = myCart.getProducts();
+        for(Product product: products){
+            model.addAttribute("product", product);
+        }
+        model.addAttribute("products", products);
         return "Confirmation";
     }
 
-//    ///////////////////////CUSTOMER VIEWING CART
+/////////////////////////////////CUSTOMER VIEWING CART
+//////////////////////////////TESTED****WORKS
     @RequestMapping("/cart")
     public String viewCart(Authentication auth, Model model){
         AppUser appUser = userService.findByUsername(auth.getName());
