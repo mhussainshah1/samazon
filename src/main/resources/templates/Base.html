@@ -52,7 +52,7 @@
                     <!--Search Bar-->
 
 
-                    <li class="pull-right"><a th:inline="text" th:if="${#authorization.expression('isAuthenticated()')}">Welcome, [[${#authentication.name}]]</a></li>
+                    <li class="pull-right"><a class="nav-link" href="/user" th:inline="text" th:if="${#authorization.expression('isAuthenticated()')}">Welcome, [[${#authentication.name}]]</a></li>
 
                     <li class="nav-item" sec:authorize="hasAnyAuthority('CUSTOMER', 'ADMIN')">
                         <a class="dropdown-item" href="/cart">Cart</a>
