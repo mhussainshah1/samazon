@@ -68,10 +68,6 @@ public class UserService {
         productRepository.save(product);
     }
 
-    public void updateQuantity(Product product){
-        product.setQuantity(product.getQuantity() -1);
-    }
-
 
 
 //    public void findCarts(AppUser appUser){
@@ -174,16 +170,46 @@ public class UserService {
         return carts;
     }
 
-    public void CheckoutCart(Cart cart){
-        for (Product product : cart.getProducts()){
-            updateQuantity(product);
+    public Cart CheckoutCart(AppUser appUser){
+        Collection<Cart> carts= appUser.getCarts();
+        Cart activeCart = new Cart();
+        for (Cart cart : carts){
+            if(cart.getStatus().equalsIgnoreCase("Active")){
+                activeCart = cart;
+            }
         }
-       // Collection<Cart> carts = userRepo
+        activeCart.setStatus("NotActive");
+        cartRepository.save(activeCart);
+        Cart newCart = new Cart();
+        carts.add(activeCart);
+        carts.add(newCart);
+        appUser.setCarts(carts);
+        userRepository.save(appUser);
+        return activeCart;
     }
+
+    public void updateQuantity(Product product){
+        product.setQuantity(product.getQuantity() -1);
+    }
+
+
 
     public void changeCartStatus(Cart cart){
         cart.setStatus("NotActive");
         cartRepository.save(cart);
+    }
+
+
+    public Iterable<Product> getAllProducts(){
+        return productRepository.findAll();
+    }
+
+    public Product getProduct(long id){
+        return productRepository.findOne(id);
+    }
+
+    public void deleteProduct(long id){
+        productRepository.delete(id);
     }
 
 }

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.zip.CheckedOutputStream;
 
 @Controller
 public class HomeController {
@@ -26,26 +27,18 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CartRepository cartRepository;
 
 //////////////////////////////////////Everyone can view
 //////////////////////////////Tested **** WORKS
     @RequestMapping("/")
     public String homePage(Model model){
-        model.addAttribute("products", productRepository.findAll());
+        model.addAttribute("products", userService.getAllProducts());
         return "Home";
     }
 
     @RequestMapping("/product/{id}")
     public String productDetails(@PathVariable("id") long id, Model model){
-        Product product = productRepository.findOne(id);
+        Product product = userService.getProduct(id);
         model.addAttribute("product", product);
         return "ProductPage";
     }
@@ -82,7 +75,7 @@ public class HomeController {
     {
         String query = request.getParameter("search");
         model.addAttribute("search", query);
-        Iterable<Product> allProducts = productRepository.findAll();
+        Iterable<Product> allProducts = userService.getAllProducts();
         Collection<Product> searchedProducts = new HashSet<>();
         for(Product product : allProducts){
             if (product.getName().contains(query)){
@@ -98,8 +91,8 @@ public class HomeController {
 
     @RequestMapping("/addtocart/{id}")
     public String addToCart(@PathVariable("id") long id, Authentication auth, Model model){
-        AppUser appUser = userRepository.findByUsername(auth.getName());
-        Product product = productRepository.findOne(id);
+        AppUser appUser = userService.findByUsername(auth.getName());
+        Product product = userService.getProduct(id);
         Cart activeCart = userService.updateCart(product, appUser);
         model.addAttribute("cart", activeCart);
         return "redirect:/cart";
@@ -108,16 +101,9 @@ public class HomeController {
 
     @RequestMapping("/checkout")
     public String checkoutCart(Authentication auth, Model model){
-        AppUser appUser = userRepository.findByUsername(auth.getName());
-        Cart myCart = userService.getActiveCart(appUser);
-
-        //Below: updating quantities of all products in cart
-        userService.CheckoutCart(myCart);
-        //Below: Changing cart -> order by changing status to NotActive and resaving into cart repo)
-        userService.changeCartStatus(myCart);
-        //Below: new active cart for the next time
-        userService.setActiveCart(appUser);
-        //Sending information from order to confirmation
+        AppUser appUser = userService.findByUsername(auth.getName());
+        ///Switches status of current active cart to notactive, creates new active cart
+        Cart myCart = userService.CheckoutCart(appUser);
         model.addAttribute(myCart);
         return "Confirmation";
     }
@@ -125,7 +111,7 @@ public class HomeController {
 //    ///////////////////////CUSTOMER VIEWING CART
     @RequestMapping("/cart")
     public String viewCart(Authentication auth, Model model){
-        AppUser appUser = userRepository.findByUsername(auth.getName());
+        AppUser appUser = userService.findByUsername(auth.getName());
         model.addAttribute("appUser", appUser);
         Cart activeCart = userService.getActiveCart(appUser);
         double total = userService.getTotal(activeCart);
@@ -149,8 +135,8 @@ public class HomeController {
 //////////////////////////////////////TESTED ****** WORKS
     @RequestMapping("/remove/{id}")
     public String removeItem(@PathVariable("id") long id, Authentication auth){
-        AppUser appUser = userRepository.findByUsername(auth.getName());
-        Product product = productRepository.findOne(id);
+        AppUser appUser = userService.findByUsername(auth.getName());
+        Product product = userService.getProduct(id);
         userService.removeItem(product, appUser);
         return "redirect:/cart";
     }
@@ -175,7 +161,7 @@ public class HomeController {
 
     @RequestMapping("/edit/{id}")
     public String editProduct(@PathVariable("id") long id, Model model){
-        Product product = productRepository.findOne(id);
+        Product product = userService.getProduct(id);
         model.addAttribute("product", product);
         return "ProductForm";
     }
@@ -183,7 +169,7 @@ public class HomeController {
 
     @RequestMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") long id){
-        productRepository.delete(id);
+        userService.deleteProduct(id);
         ///// Updates all user's carts and removes item
         return "redirect:/";
     }
@@ -191,7 +177,7 @@ public class HomeController {
 
 
     public Collection<Product> findProducts(String query){
-        Iterable<Product> allProducts = productRepository.findAll();
+        Iterable<Product> allProducts = userService.getAllProducts();;
         Collection<Product> searchedProducts = new HashSet<>();
         for(Product product : allProducts){
             if (product.getName().contains(query)){
