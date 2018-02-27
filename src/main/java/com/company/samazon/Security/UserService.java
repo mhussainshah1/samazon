@@ -86,30 +86,61 @@ public class UserService {
         appUser.setCarts(carts);
     }
 
-    public Cart updateCart(Product product, Cart cart){
-        Collection<Product> products = cart.getProducts();
+//    public Cart updateCart(Product product, Cart cart){
+//        Collection<Product> products = cart.getProducts();
+//        products.add(productRepository.findByName(product.getName()));
+//        cart.setProducts(products);
+//        cartRepository.save(cart);
+//
+//        return cart;
+//    }
+
+    public Cart updateCart(Product product, AppUser user){
+        Collection<Cart> carts = user.getCarts();
+        Cart activeCart = new Cart();
+        for (Cart cart : carts){
+            if(cart.getStatus().equalsIgnoreCase("Active")){
+                activeCart = cart;
+            }
+        }
+        Collection<Product> products = activeCart.getProducts();
         products.add(productRepository.findByName(product.getName()));
-        cart.setProducts(products);
-        cartRepository.save(cart);
-        return cart;
+        activeCart.setProducts(products);
+        cartRepository.save(activeCart);
+        carts.add(activeCart);
+        user.setCarts(carts);
+        userRepository.save(user);
+        return activeCart;
     }
 
-    public void removeItem(Product product, Cart cart){
-        Collection<Product> products = cart.getProducts();
+
+
+    public void removeItem(Product product, AppUser appUser){
+        Collection<Cart> carts = appUser.getCarts();
+        Cart activeCart = new Cart();
+        for (Cart cart : carts){
+            if(cart.getStatus().equalsIgnoreCase("Active")){
+                activeCart = cart;
+            }
+        }
+        Collection<Product> products = activeCart.getProducts();
         products.remove(product);
-        cart.setProducts(products);
+        activeCart.setProducts(products);
+        carts.add(activeCart);
+        cartRepository.save(activeCart);
+        appUser.setCarts(carts);
+        userRepository.save(appUser);
     }
 
     public double getTotal(Cart cart){
-        double total = 0;
+        double total = 0.00;
         for(Product product : cart.getProducts()){
-            total = total + (product.getPrice());
+            total = total + (Double.parseDouble(product.getPrice()));
         }
         return total;
     }
 
-    public Cart getActiveCart(String username){
-        AppUser appUser=userRepository.findByUsername(username);
+    public Cart getActiveCart(AppUser appUser){
         Collection<Cart> carts= appUser.getCarts();
         Cart thisCart = new Cart();
         for (Cart cart : carts){

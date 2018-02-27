@@ -2,6 +2,7 @@ package com.company.samazon.Models;
 
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -16,7 +17,7 @@ public class Product {
     private String name;
 
     @Column
-    private double price;
+    private String price;
 
     @Column
     private String description;
@@ -34,7 +35,7 @@ public class Product {
         this.carts = new HashSet<>();
     }
 
-    public Product(String name, float price, String description, int quantity) {
+    public Product(String name, String price, String description, int quantity) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -58,11 +59,11 @@ public class Product {
         this.name = name;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

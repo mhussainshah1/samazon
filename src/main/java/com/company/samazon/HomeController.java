@@ -35,8 +35,8 @@ public class HomeController {
     @Autowired
     private CartRepository cartRepository;
 
-    ////////////Everyone can view
-
+//////////////////////////////////////Everyone can view
+//////////////////////////////Tested **** WORKS
     @RequestMapping("/")
     public String homePage(Model model){
         model.addAttribute("products", productRepository.findAll());
@@ -49,11 +49,8 @@ public class HomeController {
         model.addAttribute("product", product);
         return "ProductPage";
     }
-
-
-
-/////////////////////////// New User, Login and User Details (Order History) (CUSTOMER)
-
+//////////////////////////////////////// New User, Login(CUSTOMER)
+////////////////////////////////TESTED **** WORKS
     @RequestMapping("/login")
     public String login(Model model){
         return "Login";
@@ -68,12 +65,9 @@ public class HomeController {
     @PostMapping("/newuser")
     public String processUser(@Valid @ModelAttribute("appUser") AppUser appUser){
         userService.saveCustomer(appUser);
-        return "redirect:/";
+        return "redirect:/login";
     }
-
-
-
-//    ///////User's Ordering History
+/////////////////////////////////////////User's Ordering History
     @RequestMapping("/user")
     public String userDetails(Model model, Authentication auth){
         AppUser appuser = userService.findByUsername(auth.getName());
@@ -81,60 +75,60 @@ public class HomeController {
         model.addAttribute("appuser", appuser);
         return "UserDetails";
     }
+///////////////////////////////////////// (CUSTOMER)
 
-    /////////////////////////////////Checkout  (CUSTOMER)
-//
+    @PostMapping("/searchproduct")
+    public String showSearchResults(HttpServletRequest request, Model model)
+    {
+        String query = request.getParameter("search");
+        model.addAttribute("search", query);
+        Iterable<Product> allProducts = productRepository.findAll();
+        Collection<Product> searchedProducts = new HashSet<>();
+        for(Product product : allProducts){
+            if (product.getName().contains(query)){
+                searchedProducts.add(product);
+                model.addAttribute("product", product);
+            }
+        }
+        model.addAttribute("products", searchedProducts);
+//        model.addAttribute("product", productRepository.findAllByNameContainingIgnoreCase(query));
+        return "SearchResult";
+    }
+
+
+    @RequestMapping("/addtocart/{id}")
+    public String addToCart(@PathVariable("id") long id, Authentication auth, Model model){
+        AppUser appUser = userRepository.findByUsername(auth.getName());
+        Product product = productRepository.findOne(id);
+        Cart activeCart = userService.updateCart(product, appUser);
+        model.addAttribute("cart", activeCart);
+        return "redirect:/cart";
+
+    }
+
     @RequestMapping("/checkout")
     public String checkoutCart(Authentication auth, Model model){
         AppUser appUser = userRepository.findByUsername(auth.getName());
-        Cart myCart = userService.getActiveCart(auth.getName());
+        Cart myCart = userService.getActiveCart(appUser);
 
         //Below: updating quantities of all products in cart
         userService.CheckoutCart(myCart);
-
         //Below: Changing cart -> order by changing status to NotActive and resaving into cart repo)
         userService.changeCartStatus(myCart);
-
         //Below: new active cart for the next time
         userService.setActiveCart(appUser);
-
         //Sending information from order to confirmation
         model.addAttribute(myCart);
         return "Confirmation";
     }
 
-//
-//    ////////////////////////// CUSTOMER ADDING PRODUCT TO CART
-    @RequestMapping("/addtocart/{id}")
-    public String addToCart(@PathVariable("id") long id, Authentication auth, Model model){
-
-
-
-Cart myCart = new Cart();
-        String username = auth.getName();
-        AppUser appUser = userRepository.findByUsername(username);
-
-
-
-
-        Product product = productRepository.findOne(id);
-        Cart cart = userService.getActiveCart(username);
-        Cart newCart = userService.updateCart(product, cart);
-        userRepository.save(appUser);
-        model.addAttribute("cart", myCart);
-        return "redirect:/cart";
-
-    }
-
-
 //    ///////////////////////CUSTOMER VIEWING CART
     @RequestMapping("/cart")
     public String viewCart(Authentication auth, Model model){
         AppUser appUser = userRepository.findByUsername(auth.getName());
-
-
         model.addAttribute("appUser", appUser);
-        double total = userService.getTotal(userService.getActiveCart(auth.getName()));
+        Cart activeCart = userService.getActiveCart(appUser);
+        double total = userService.getTotal(activeCart);
         String message = "You spent over $50, You get Free Shipping!";
         if (total < 50.0){
             total += 5.0;
@@ -142,35 +136,27 @@ Cart myCart = new Cart();
         }
         model.addAttribute("total", total);
         model.addAttribute("message", message);
-        Collection<Product> theseProducts = new HashSet<>();
 
-//        for (Product product : userService.getActiveCart(auth.getName()).getProducts()){
-//            theseProducts.add(product);
-//        }
+        for (Product product : activeCart.getProducts()){
+           model.addAttribute("product", product);}
 
-        for (Product product : userService.getActiveCart(auth.getName()).getProducts()){
-           theseProducts.add(product);
-     }
-
-            model.addAttribute("products", theseProducts);
+           model.addAttribute("products", activeCart.getProducts());
         return "Cart";
     }
-//
-//
-//    ///////////////CUSTOMER CLICKS REMOVE PRODUCT WHILE LOOKING AT CART
+
+
+/////////////////////////CUSTOMER CLICKS REMOVE PRODUCT WHILE LOOKING AT CART
+//////////////////////////////////////TESTED ****** WORKS
     @RequestMapping("/remove/{id}")
     public String removeItem(@PathVariable("id") long id, Authentication auth){
         AppUser appUser = userRepository.findByUsername(auth.getName());
         Product product = productRepository.findOne(id);
-        Cart cart = userService.getActiveCart(auth.getName());
-        userService.removeItem(product, cart);
+        userService.removeItem(product, appUser);
         return "redirect:/cart";
     }
 
-
-/////////////////////////////////////////////////////////////////////////////////
-
-    ////////(ADMIN) USE TO CREATE NEW PRODUCT or EDIT
+//////////////////////////////////////////////////////////(ADMIN) USE TO CREATE NEW PRODUCT or EDIT
+/////////////////////////////////////////////////////////TESTED******ALL WORK
 
     @GetMapping("/newproduct")
     public String newProduct(Model model){
@@ -195,8 +181,6 @@ Cart myCart = new Cart();
     }
 
 
-
-
     @RequestMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") long id){
         productRepository.delete(id);
@@ -205,16 +189,16 @@ Cart myCart = new Cart();
     }
 
 
-    @PostMapping("/searchproduct")
-    public String showproductSearchResults(HttpServletRequest request, Model model)
-    {
-        String searchnameofproduct = request.getParameter("search");
-        model.addAttribute("search",searchnameofproduct);
-        model.addAttribute("product", productRepository.findAllByNameContainingIgnoreCase(searchnameofproduct));
-        return "SearchResult";
+
+    public Collection<Product> findProducts(String query){
+        Iterable<Product> allProducts = productRepository.findAll();
+        Collection<Product> searchedProducts = new HashSet<>();
+        for(Product product : allProducts){
+            if (product.getName().contains(query)){
+                searchedProducts.add(product);
+            }
+        }
+        return searchedProducts;
     }
-
-
-
 
 }

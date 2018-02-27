@@ -35,7 +35,9 @@
     </tbody>
 </table>
 
-    <!--<a th:href="@{/add}">Remove Item</a>-->
+
+
+    <a sec:authorize="hasAuthority('ADMIN')" class="nav-link" href="/newproduct">Add Product</a>
 
 
 <!--<table>-->

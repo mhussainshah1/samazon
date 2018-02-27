@@ -32,7 +32,8 @@
 
 
     <div th:text="${message}"></div> <br /> <br />
-    <div th:number="${total}"></div>
+    <div th:inline="text"> Your Cart Total = $[[${total}]]</div>
+
 
 
 </div>
