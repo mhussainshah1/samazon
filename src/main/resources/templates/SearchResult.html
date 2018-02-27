@@ -16,27 +16,16 @@
     <h1 class="text-center"></h1>
     <div class="col-md-8 col-md-offset-4">
         <div th:if="${search}!=null" th:inline="text">You searched for [[${search}]]</div>
-        <table th:if="${prodcut}" class="table">
+        <table th:if="${product}" class="table">
 
-            <thead>
-            <tr>
-                <th>Search Results</th>
 
+            <tr th:each="product :${searchproducts}">
+                <td><img th:src='${product.image}' width="150" height="150"/></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:href="@{/product/{id}(id=(id=${product.id})}">Product details</td>
             </tr>
 
-            </thead>
-            <tbody>
-
-            <div th:if="${search}!=null" th:inline="text">
-                You searched for [[$search]]
-            </div>
-            <tr th:each="product :${products}">
-                <td th:text="${product.name}">product</td>
-                <td th:href="@{/product/{id}(id=(id=${product.id})}">product details</td>
-
-
-            </tr>
-            </tbody>
         </table>
     </div>
 

@@ -192,6 +192,11 @@ public class UserService {
         return cartRepository.findOne(id);
     }
 
+    public Iterable<Product> searchProducts(String query){
+        return productRepository.findAllByNameContainingIgnoreCase(query);
+    }
+
+
 }
 
 

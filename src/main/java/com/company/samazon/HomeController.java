@@ -115,18 +115,26 @@ public class HomeController {
     {
         String query = request.getParameter("search");
         model.addAttribute("search", query);
-        Iterable<Product> allProducts = userService.getAllProducts();
-        Collection<Product> searchedProducts = new HashSet<>();
-        for(Product product : allProducts){
-            if (product.getName().contains(query)){
-                searchedProducts.add(product);
-                model.addAttribute("product", product);
-            }
-        }
-        model.addAttribute("products", searchedProducts);
-//        model.addAttribute("product", productRepository.findAllByNameContainingIgnoreCase(query));
+        model.addAttribute("searchproducts", userService.searchProducts(query));
         return "SearchResult";
     }
+//    @GetMapping("/searchproduct")
+//    public String getproductSearch(){
+////model.addAttribute("product", new Product());
+//        return "searchform";
+//    }
+//    @PostMapping("/searchproduct")
+//    public String showseachResult(HttpServletRequest request, Model model){
+//        String searchnameofproduct = request.getParameter("search");
+//        model.addAttribute("search", searchnameofproduct);
+//        model.addAttribute("searchproducts", productRepository.findAllByNameContainingIgnoreCase(searchnameofproduct));
+//
+//        System.out.println(productRepository.findAllByNameContainingIgnoreCase(searchnameofproduct).toString());
+//
+//        return "SearchResult";
+//    }
+
+
 
     @RequestMapping("/checkout")
     public String checkoutCart(Authentication auth, Model model){
