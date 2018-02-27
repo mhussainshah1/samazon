@@ -4,9 +4,6 @@ package com.company.samazon;
 import com.company.samazon.Models.AppUser;
 import com.company.samazon.Models.Cart;
 import com.company.samazon.Models.Product;
-import com.company.samazon.Repositories.CartRepository;
-import com.company.samazon.Repositories.ProductRepository;
-import com.company.samazon.Repositories.UserRepository;
 import com.company.samazon.Security.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.zip.CheckedOutputStream;
 
 @Controller
 public class HomeController {
@@ -42,6 +37,7 @@ public class HomeController {
         model.addAttribute("product", product);
         return "ProductPage";
     }
+
 //////////////////////////////////////// New User, Login(CUSTOMER)
 ////////////////////////////////TESTED **** WORKS
     @RequestMapping("/login")
@@ -60,6 +56,7 @@ public class HomeController {
         userService.saveCustomer(appUser);
         return "redirect:/login";
     }
+
 /////////////////////////////////////////////// (CUSTOMER)
 ////////////////////////////////TESTED*******WORKS
     @RequestMapping("/addtocart/{id}")
@@ -70,8 +67,6 @@ public class HomeController {
         model.addAttribute("cart", activeCart);
         return "redirect:/cart";
     }
-
-
 
     /////////////////////////////////////////User's Ordering History
     @RequestMapping("/user")
@@ -108,33 +103,14 @@ public class HomeController {
         return "OrderDetails";
     }
 
-
     ///////////////////////////////////////////////////////////////////////////////////////////
     @PostMapping("/searchproduct")
-    public String showSearchResults(HttpServletRequest request, Model model)
-    {
+    public String showSearchResults(HttpServletRequest request, Model model){
         String query = request.getParameter("search");
         model.addAttribute("search", query);
         model.addAttribute("searchproducts", userService.searchProducts(query));
         return "SearchResult";
     }
-//    @GetMapping("/searchproduct")
-//    public String getproductSearch(){
-////model.addAttribute("product", new Product());
-//        return "searchform";
-//    }
-//    @PostMapping("/searchproduct")
-//    public String showseachResult(HttpServletRequest request, Model model){
-//        String searchnameofproduct = request.getParameter("search");
-//        model.addAttribute("search", searchnameofproduct);
-//        model.addAttribute("searchproducts", productRepository.findAllByNameContainingIgnoreCase(searchnameofproduct));
-//
-//        System.out.println(productRepository.findAllByNameContainingIgnoreCase(searchnameofproduct).toString());
-//
-//        return "SearchResult";
-//    }
-
-
 
     @RequestMapping("/checkout")
     public String checkoutCart(Authentication auth, Model model){
@@ -180,7 +156,6 @@ public class HomeController {
         return "Cart";
     }
 
-
 /////////////////////////CUSTOMER CLICKS REMOVE PRODUCT WHILE LOOKING AT CART
 //////////////////////////////////////TESTED ****** WORKS
     @RequestMapping("/remove/{id}")
@@ -220,21 +195,8 @@ public class HomeController {
     @RequestMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") long id){
         userService.deleteProduct(id);
-        ///// Updates all user's carts and removes item
         return "redirect:/";
     }
 
-////////////////////////////////////////////////////////////////////////////
-
-    public Collection<Product> findProducts(String query){
-        Iterable<Product> allProducts = userService.getAllProducts();;
-        Collection<Product> searchedProducts = new HashSet<>();
-        for(Product product : allProducts){
-            if (product.getName().contains(query)){
-                searchedProducts.add(product);
-            }
-        }
-        return searchedProducts;
-    }
 
 }

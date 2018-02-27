@@ -17,15 +17,12 @@
     <div class="col-md-8 col-md-offset-4">
         <div  th:inline="text">You searched for [[${search}]]</div>
         <table class="table">
-
-
             <tr th:each="product :${searchproducts}">
                 <td><img th:src='${product.image}' width="150" height="150"/></td>
                 <td th:text="${product.name}"></td>
                 <td th:text="${product.price}"></td>
                 <td th:href="@{/product/{id}(id=${product.id})}">View Product Details</td>
             </tr>
-
         </table>
     </div>
 </div>

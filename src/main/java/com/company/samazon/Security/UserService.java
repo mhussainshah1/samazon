@@ -38,15 +38,12 @@ public class UserService {
         this.productRepository = productRepository;
     }
 
-
     public UserService() {
     }
-
 
     public AppUser findById(Long id){   return userRepository.findById(id); }
 
     public AppUser findByUsername(String username){   return userRepository.findByUsername(username); }
-
 
     public void saveCustomer(AppUser appuser){
         appuser.setRoles(Arrays.asList(roleRepository.findByRoleName("CUSTOMER")));

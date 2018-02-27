@@ -8,25 +8,13 @@
 </head>
 <body>
 <div class="container">
-
     <th:block th:replace="Base :: navlinks"></th:block>
-
     <h4>Register as a new user</h4>
     <form action="#" th:action="@{/newuser}" th:object="${appUser}" method="post">
-
         <input type="hidden" th:field="*{id}" />
         <input type="text" placeholder="Username" th:field="*{username}" />
-        <!--<span th:if="${#fields.hasErrors('username')}"-->
-            <!--th:errors="*{username}"></span><br />-->
-
         <input type="text"  placeholder="Password" th:field="*{password}" />
-        <!--<span th:if="${#fields.hasErrors('password')}"-->
-            <!--th:errors="*{password}"></span><br />-->
-
-
-
         <button class="btn btn-primary btn-large" type="submit" >Submit</button>
-
     </form>
 </div>
 
