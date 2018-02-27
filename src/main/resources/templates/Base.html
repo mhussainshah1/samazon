@@ -21,13 +21,13 @@
                     <!--Image of Samazon logo-->
                 <!--</li>-->
                 <!--<p> </p>-->
-                    <h2>Samazon</h2>
+                    <h2><a class="nav-link" href="/">Samazon</a></h2>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
+                    <!--<li class="nav-item">-->
+                        <!--<a class="nav-link" href="/">Home</a>-->
+                    <!--</li>-->
 
-                    <li><form th:action="@{/searchproduct}" th:object="${product}" method="post">
+                    <li ><form  class="nav-link" th:action="@{/searchproduct}" th:object="${product}" method="post">
                         <label>Search:</label><input type="text" name="search"/>
                         </form>
                     </li>
@@ -52,10 +52,12 @@
                     <!--Search Bar-->
 
 
-                    <li class="pull-right"><a class="nav-link" href="/user" th:inline="text" th:if="${#authorization.expression('isAuthenticated()')}">Welcome, [[${#authentication.name}]]</a></li>
+                    <li>
+                        <a class="nav-link" href="/user" th:inline="text" th:if="${#authorization.expression('isAuthenticated()')}">Welcome, [[${#authentication.name}]]</a>
+                    </li>
 
-                    <li class="nav-item" sec:authorize="hasAnyAuthority('CUSTOMER', 'ADMIN')">
-                        <a class="dropdown-item" href="/cart">Cart</a>
+                    <li sec:authorize="hasAnyAuthority('CUSTOMER', 'ADMIN')">
+                        <a class="nav-link" href="/cart">Cart</a>
                     </li>
                 </ul>
             </div>

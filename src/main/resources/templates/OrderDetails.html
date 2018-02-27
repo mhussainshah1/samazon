@@ -16,10 +16,10 @@
     <br /><br />
     <table class="table table-striped">
         <tr>
-            <th>Image</th>
-            <th>Product:</th>
+            <th>Product</th>
+            <th></th>
             <th>Price</th>
-            <th>Description</th>
+
 
             <!--<th></th>-->
         </tr>
@@ -27,7 +27,7 @@
             <td><img th:src='${product.image}' width="150" height="150"/></td>
             <td th:text="${product.name}"></td>
             <td th:text="${product.price}"></td>
-            <td th:text="${product.description}"></td>
+
         </tr>
     </table>
     <div th:inline="text"> Shipping: [[${message}]]</div>

@@ -16,20 +16,20 @@
     <h1 class="text-center"></h1>
     <div class="col-md-8 col-md-offset-4">
         <div th:if="${search}!=null" th:inline="text">You searched for [[${search}]]</div>
-        <table th:if="${product}" class="table">
+        <table class="table">
 
 
             <tr th:each="product :${searchproducts}">
                 <td><img th:src='${product.image}' width="150" height="150"/></td>
                 <td th:text="${product.name}"></td>
                 <td th:text="${product.price}"></td>
-                <td th:href="@{/product/{id}(id=(id=${product.id})}">Product details</td>
+                <td th:href="@{/product/{id}(id=${product.id})}">View Product Details</td>
             </tr>
 
         </table>
     </div>
 
-
+</div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
