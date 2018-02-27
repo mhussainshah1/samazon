@@ -8,6 +8,8 @@
 </head>
 <body>
 <div class="container">
+    <h4>Previous Orders</h4>
+    <th:block th:replace="Base :: navlinks"></th:block>
 <div th:inline="text">[[${appUser.username}, Order History</div>
     <div th:each="cart : ${carts}">
     <span th:inline="text">Order #: [[${cart.id}]]</span>
