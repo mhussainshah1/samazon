@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container">
-
+    <th:block th:replace="Base :: navlinks"></th:block>
     <div class="starter-template">
         <h5>Order Confirmation</h5>
     </div>
@@ -27,7 +27,7 @@
             <td th:text="${product.description}"></td>
         </tr>
     </table>
-
+    <div th:inline="text"> Shipping: [[${message}]]</div>
     <div th:inline="text"> Your Cart Total = $[[${total}]]</div>
 
 </div><!-- /.container -->

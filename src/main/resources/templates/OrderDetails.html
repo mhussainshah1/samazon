@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container">
-
+    <th:block th:replace="Base :: navlinks"></th:block>
     <div class="starter-template">
         <h5>Order Details</h5>
         <div th:inline="text"> Order # [[${Order.id}]]</div>
@@ -28,7 +28,7 @@
             <td th:text="${product.description}"></td>
         </tr>
     </table>
-
+    <div th:inline="text"> Shipping: [[${message}]]</div>
     <div th:inline="text"> Your Order Total = $[[${total}]]</div>
 
 </div><!-- /.container -->

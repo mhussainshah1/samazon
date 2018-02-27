@@ -96,7 +96,14 @@ public class HomeController {
         for(Product product : cart.getProducts()) {
             model.addAttribute("product", product);
         }
-        model.addAttribute("total", userService.getTotal(cart));
+        double total = userService.getTotal(cart);
+        String message = "You spent over $50, You got Free Shipping";
+        if (total < 50.0){
+            total += 5.0;
+            message = "$5 for Shipping";
+        }
+        model.addAttribute("message", message);
+        model.addAttribute("total", total);
         model.addAttribute("Order", cart);
         return "OrderDetails";
     }
@@ -124,13 +131,20 @@ public class HomeController {
     @RequestMapping("/checkout")
     public String checkoutCart(Authentication auth, Model model){
         AppUser appUser = userService.findByUsername(auth.getName());
-        ///Switches status of current active cart to 'notactive', creates new active cart
         Cart myCart = userService.CheckoutCart(appUser);
         model.addAttribute("cart", myCart);
         Collection<Product> products = myCart.getProducts();
         for(Product product: products){
             model.addAttribute("product", product);
         }
+        double total = userService.getTotal(myCart);
+        String message = "You spent over $50, You got Free Shipping";
+        if (total < 50.0){
+            total += 5.0;
+            message = "$5 charged for Shipping";
+        }
+        model.addAttribute("message", message);
+        model.addAttribute("total", total);
         model.addAttribute("products", products);
         return "Confirmation";
     }

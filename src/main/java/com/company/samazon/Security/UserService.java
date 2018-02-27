@@ -47,12 +47,6 @@ public class UserService {
 
     public AppUser findByUsername(String username){   return userRepository.findByUsername(username); }
 
-//    public Cart findByCart(String username){   return cartRepository.findByAppuserByUsername(username); }
-
-//    public Product findByName(String name){
-//        return productRepository.findbyName(name);
-//    }
-
 
     public void saveCustomer(AppUser appuser){
         appuser.setRoles(Arrays.asList(roleRepository.findByRoleName("CUSTOMER")));
@@ -69,11 +63,6 @@ public class UserService {
     }
 
 
-
-//    public void findCarts(AppUser appUser){
-//        appUser.setCarts(Arrays.asList(cartRepository.findByAppuserByUsername(appUser.getUsername())));
-//    }
-
     public void setActiveCart(AppUser appUser){
         Collection<Cart> carts = appUser.getCarts();
         Cart thisCart = new Cart();
@@ -81,15 +70,6 @@ public class UserService {
         cartRepository.save(thisCart);
         appUser.setCarts(carts);
     }
-
-//    public Cart updateCart(Product product, Cart cart){
-//        Collection<Product> products = cart.getProducts();
-//        products.add(productRepository.findByName(product.getName()));
-//        cart.setProducts(products);
-//        cartRepository.save(cart);
-//
-//        return cart;
-//    }
 
     public Cart updateCart(Product product, AppUser user){
         Collection<Cart> carts = user.getCarts();
@@ -108,7 +88,6 @@ public class UserService {
         userRepository.save(user);
         return activeCart;
     }
-
 
 
     public void removeItem(Product product, AppUser appUser){
@@ -185,6 +164,7 @@ public class UserService {
         activeCart.setStatus("NotActive");
         cartRepository.save(activeCart);
         Cart newCart = new Cart();
+        cartRepository.save(newCart);
         carts.add(activeCart);
         carts.add(newCart);
         appUser.setCarts(carts);
@@ -195,8 +175,6 @@ public class UserService {
     public void updateQuantity(Product product){
         product.setQuantity(product.getQuantity() -1);
     }
-
-
 
     public Iterable<Product> getAllProducts(){
         return productRepository.findAll();
