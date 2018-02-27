@@ -14,8 +14,8 @@
     <h4>Previous Orders</h4>
     <div th:inline="text">[[${appUser.username}]]'s Order History</div>
         <div th:each="cart : ${carts}">
-    <span th:inline="text">Order #: [[${cart.id}]]</span>
-    <a th:href="@{/order/{id} (id=${cart.id})}">Order Details </a>
+        <span th:inline="text">Order #: [[${cart.id}]]</span>
+        <a th:href="@{/order/{id} (id=${cart.id})}">Order Details </a>
 </div>
     </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
