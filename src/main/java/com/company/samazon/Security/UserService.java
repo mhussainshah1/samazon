@@ -160,14 +160,18 @@ public class UserService {
     }
 
     //this method looks for all inactive carts- order history
-    public Collection<Cart> getOrders(){
-        Collection<Cart> carts = new HashSet<>();
-        for (Cart cart : cartRepository.findAll()){
+    public Collection<Cart> getOrders(AppUser appUser){
+        Collection<Cart> carts = appUser.getCarts();
+        for (Cart cart : carts){
             if(cart.getStatus().equalsIgnoreCase("NotActive")){
                 carts.add(cart);
             }
         }
         return carts;
+    }
+
+    public Collection<Cart> getAllCarts(AppUser appUser){
+        return appUser.getCarts();
     }
 
     public Cart CheckoutCart(AppUser appUser){
@@ -204,6 +208,10 @@ public class UserService {
 
     public void deleteProduct(long id){
         productRepository.delete(id);
+    }
+
+    public Cart getOrderDetails(long id){
+        return cartRepository.findOne(id);
     }
 
 }

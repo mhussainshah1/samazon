@@ -76,11 +76,31 @@ public class HomeController {
     /////////////////////////////////////////User's Ordering History
     @RequestMapping("/user")
     public String userDetails(Model model, Authentication auth){
-        AppUser appuser = userService.findByUsername(auth.getName());
-        model.addAttribute("carts", appuser.getCarts());
-        model.addAttribute("appuser", appuser);
+        AppUser appUser = userService.findByUsername(auth.getName());
+        Collection<Cart> carts = userService.getAllCarts(appUser);
+        for (Cart cart : carts){
+            if(cart.getStatus().equalsIgnoreCase("NotActive")){
+                carts.add(cart);
+                model.addAttribute("cart", cart);
+            }
+        }
+        model.addAttribute("carts", carts);
+        model.addAttribute("appuser", appUser);
         return "UserDetails";
     }
+
+    @RequestMapping("/order/{id}")
+    public String viewOrder(Model model, @PathVariable("id") long id){
+        Cart cart = userService.getOrderDetails(id);
+        model.addAttribute("products", cart.getProducts());
+        for(Product product : cart.getProducts()) {
+            model.addAttribute("product", product);
+        }
+        model.addAttribute("total", userService.getTotal(cart));
+        model.addAttribute("Order", cart);
+        return "OrderDetails";
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     @PostMapping("/searchproduct")
@@ -182,7 +202,7 @@ public class HomeController {
         return "redirect:/";
     }
 
-
+////////////////////////////////////////////////////////////////////////////
 
     public Collection<Product> findProducts(String query){
         Iterable<Product> allProducts = userService.getAllProducts();;
