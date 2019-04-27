@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::header">
+    <title>Samazon</title>
+</head>
+<body>
+<div th:replace="base::navlinks"></div>
+<h4>Your Search Results</h4>
+
+
+<div class="container">
+    <h1 class="text-center"></h1>
+    <div class="col-md-8 col-md-offset-4">
+        <div th:inline="text">You searched for [[${search}]]</div>
+        <table class="table">
+            <tr th:each="product :${searchproducts}">
+                <td><img height="150" th:src='${product.image}' width="150"/></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:href="@{/product/{id}(id=${product.id})}">View Product Details</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div th:replace="base::footer"></div>
+</body>
+</html>

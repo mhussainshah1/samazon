@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::header">
+    <title>Samazon</title>
+</head>
+<body>
+<div th:replace="base::navlinks"></div>
+<div class="container">
+
+    <h3>Cart</h3>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Item</th>
+            <th scope="col"></th>
+            <th scope="col">Price</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td><img height="150" th:src="${product.image}" width="150"/></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.price}"></td>
+            <td><a th:href="@{/remove/{id} (id=${product.id})}">Remove Item</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div th:text="${message}"></div>
+    <br/> <br/>
+    <div th:inline="text"> Your Cart Total = $[[${total}]]</div>
+
+    <a th:href="@{/checkout}">Checkout</a>
+
+</div>
+
+<div th:replace="base::footer"></div>
+</body>
+</html>

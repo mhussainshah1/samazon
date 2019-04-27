@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::header">
+    <title>Samazon</title>
+</head>
+
+<body>
+<div th:replace="base::navlinks"></div>
+<div class="container">
+    <h4>Register as a new user</h4>
+    <form action="#" method="post" th:action="@{/newuser}" th:object="${user}">
+        <input th:field="*{id}" type="hidden"/>
+        <div class="form-group row">
+            <label for="username">Username:</label>
+            <input id="username" placeholder="Username" th:field="*{username}" type="text"/>
+        </div>
+        <div class="form-group row">
+            <label for="password">Password:</label>
+            <input id="password" placeholder="Password" th:field="*{password}" type="password"/>
+        </div>
+        <button class="btn btn-primary btn-large" type="submit">Submit</button>
+    </form>
+</div>
+
+<div th:replace="base::footer"></div>
+
+</body>
+</html>

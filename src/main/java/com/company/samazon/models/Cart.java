@@ -1,10 +1,10 @@
-package com.company.samazon.Models;
+package com.company.samazon.models;
 
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Cart {
@@ -17,18 +17,16 @@ public class Cart {
     private String status;
 
     @ManyToMany(mappedBy = "carts")
-    private Collection<AppUser> appuser;
+    private Set<User> users;
 
     @ManyToMany
-    private Collection<Product> products;
+    private Set<Product> products;
 
     public Cart() {
         this.status = "Active";
-       // this.appuser = new HashSet<>();
+        // this.users = new HashSet<>();
         this.products = new HashSet<>();
     }
-
-
 
     public long getId() {
         return id;
@@ -36,16 +34,6 @@ public class Cart {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-
-
-    public Collection<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Collection<Product> products) {
-        this.products = products;
     }
 
     public String getStatus() {
@@ -56,11 +44,19 @@ public class Cart {
         this.status = status;
     }
 
-    public Collection<AppUser> getAppuser() {
-        return appuser;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setAppuser(Collection<AppUser> appuser) {
-        this.appuser = appuser;
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 }

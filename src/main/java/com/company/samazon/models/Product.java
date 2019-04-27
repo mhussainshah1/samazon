@@ -1,10 +1,9 @@
-package com.company.samazon.Models;
+package com.company.samazon.models;
 
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Product {
@@ -28,8 +27,8 @@ public class Product {
     @Column
     private String image;
 
-    @ManyToMany(mappedBy = "products",fetch =FetchType.LAZY)
-    private Collection<Cart> carts;
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+    private Set<Cart> carts;
 
     public Product() {
         this.carts = new HashSet<>();
@@ -41,7 +40,6 @@ public class Product {
         this.description = description;
         this.quantity = quantity;
     }
-
 
     public long getId() {
         return id;
@@ -83,19 +81,19 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public Collection<Cart> getCarts() {
-        return carts;
-    }
-
-    public void setCarts(Collection<Cart> carts) {
-        this.carts = carts;
-    }
-
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Set<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(Set<Cart> carts) {
+        this.carts = carts;
     }
 }

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::header">
+    <title>Samazon</title>
+</head>
+<body>
+<div th:replace="base::navlinks"></div>
+<div class="container">
+    <br/><br/>
+    <h4>Previous Orders</h4>
+    <div th:inline="text">[[${user.username}]]'s Order History</div>
+    <div th:each="cart : ${carts}">
+        <span th:inline="text">Order #: [[${cart.id}]]</span>
+        <a th:href="@{/order/{id} (id=${cart.id})}">Order Details </a>
+    </div>
+</div>
+<div th:replace="base::footer"></div>
+</body>
+</html>

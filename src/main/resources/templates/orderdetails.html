@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::header">
+    <title>Samazon</title>
+</head>
+<body>
+<div th:replace="base::navlinks"></div>
+<div class="container">
+    <div class="starter-template">
+        <h5>Order Details</h5>
+        <div th:inline="text"> Order # [[${Order.id}]]</div>
+    </div>
+    <br/><br/>
+    <table class="table table-striped">
+        <tr>
+            <th>Product</th>
+            <th></th>
+            <th>Price</th>
+
+
+            <!--<th></th>-->
+        </tr>
+        <tr th:each="product : ${products}">
+            <td><img height="150" th:src='${product.image}' width="150"/></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.price}"></td>
+
+        </tr>
+    </table>
+    <div th:inline="text"> Shipping: [[${message}]]</div>
+    <div th:inline="text"> Your Order Total = $[[${total}]]</div>
+
+</div><!-- /.container -->
+<div th:replace="base::footer"></div>
+</body>
+</html>

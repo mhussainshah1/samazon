@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::header">
+    <title>Samazon</title>
+</head>
+<body>
+<div th:replace="base::navlinks"></div>
+<div class="container">
+    <h3>Product Information</h3>
+
+    <form action="#" class="navbar-form pull-left" method="post" th:action="@{/newproduct}" th:object="${product}">
+
+        <input th:field="*{id}" type="hidden"/>
+
+        Name: <input placeholder="Name" th:field="*{name}" type="text"/>
+        <span th:errors="*{name}"
+              th:if="${#fields.hasErrors('name')}"></span><br/>
+
+        Price: <input placeholder="Price" th:field="*{price}" type="text"/>
+        <span th:errors="*{price}"
+              th:if="${#fields.hasErrors('price')}"></span><br/>
+
+        Image: <input placeholder="Image" th:field="*{image}" type="text"/>
+        <span th:errors="*{image}"
+              th:if="${#fields.hasErrors('image')}"></span><br/>
+
+        Description: <input placeholder="Description" th:field="*{description}" type="text"/>
+        <span th:errors="*{description}"
+              th:if="${#fields.hasErrors('description')}"></span><br/>
+
+        Quantity: <input placeholder="Quantity" th:field="*{quantity}" type="number"/>
+        <span th:errors="*{quantity}"
+              th:if="${#fields.hasErrors('quantity')}"></span><br/>
+
+        <button class="btn btn-primary btn-large" type="submit">Submit</button>
+
+    </form>
+</div>
+<div th:replace="base::footer"></div>
+</body>
+</html>

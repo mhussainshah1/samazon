@@ -1,9 +1,7 @@
-package com.company.samazon.Models;
-
-import org.hibernate.annotations.Columns;
+package com.company.samazon.models;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.Set;
 
 @Entity
 public class Role {
@@ -16,13 +14,13 @@ public class Role {
     private String roleName;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private Collection<AppUser> appusers;
+    private Set<User> users;
+
+    public Role() {
+    }
 
     public Role(String roleName) {
         this.roleName = roleName;
-    }
-
-    public Role() {
     }
 
 
@@ -42,11 +40,11 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public Collection<AppUser> getAppusers() {
-        return appusers;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setAppusers(Collection<AppUser> appusers) {
-        this.appusers = appusers;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

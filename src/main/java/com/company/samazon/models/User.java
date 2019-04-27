@@ -1,14 +1,13 @@
-package com.company.samazon.Models;
+package com.company.samazon.models;
 
-
-import com.company.samazon.Repositories.CartRepository;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class AppUser {
+@Table(name = "USER_DATA")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,33 +16,27 @@ public class AppUser {
     @Column
     private String username;
 
-
     @Column
     private String password;
 
-    @ManyToMany(fetch =FetchType.EAGER)
-    @JoinTable(joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="role_id"))
-    private Collection<Role> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     @ManyToMany
-    private Collection<Cart> carts;
+    private Set<Cart> carts;
 
-
-
-
-    public AppUser() {
+    public User() {
         this.roles = new HashSet<>();
-
-        this.carts = new HashSet<>();;
+        this.carts = new HashSet<>();
         //double check this constructor
     }
 
-    public AppUser(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
-
 
     public long getId() {
         return id;
@@ -69,21 +62,20 @@ public class AppUser {
         this.password = password;
     }
 
-    public Collection<Role> getRoles() {
+
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-    public Collection<Cart> getCarts() {
+    public Set<Cart> getCarts() {
         return carts;
     }
 
-    public void setCarts(Collection<Cart> carts) {
+    public void setCarts(Set<Cart> carts) {
         this.carts = carts;
     }
-
-
 }
